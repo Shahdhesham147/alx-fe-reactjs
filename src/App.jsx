@@ -1,8 +1,7 @@
-// src/App.jsx
 import React, { useState } from "react";
 import Search from "./Search";
 
-function App() {
+const App = () => {
   const [user, setUser] = useState(null);
 
   return (
@@ -20,6 +19,19 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
+{user && (
+  <div className="mt-6">
+    <h2 className="text-xl font-bold">{user.name}</h2>
+    <p>@{user.login}</p>
+    <img src={user.avatar_url} alt="Avatar" className="w-20 h-20 rounded-full mt-2" />
+    <p>{user.bio}</p>
+    <div className="mt-2">
+      <p>Followers: {user.followers}</p>
+      <p>Following: {user.following}</p>
+      <p>Repos: {user.public_repos}</p>
+    </div>
+  </div>
+)}

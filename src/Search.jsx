@@ -1,31 +1,17 @@
+// src/Search.jsx
 import React, { useState } from "react";
-import { getUserData } from "./services/github";  // تأكد من المسار الصحيح
+import { fetchUserData } from "./services/githubService"; // التأكد من أنك قمت بإنشاء هذه الدالة في githubService.js
 
 const Search = ({ onResult }) => {
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSearch = async () => {
-    if (!username.trim()) return;  // لو مفيش username مكتوب متعملش سيرش
+  const handleSearch = async (e) => {
+    e.preventDefault(); // منع إعادة تحميل الصفحة عند إرسال النموذج
+    if (!username) return; // التأكد من أنه تم إدخال اسم المستخدم
 
-    const data = await getUserData(username);  // استدعاء الدالة من github.js
-    onResult(data);  // إرسال النتيجة للـ App component
-    setUsername("");  // مسح الـ input بعد البحث
-  };
+    setLoading(true);
+    setError(null); // مسح أي خطأ سابق
 
-  return (
-    <div className="p-4">
-      <input
-        type="text"
-        placeholder="Enter GitHub username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="border p-2 rounded mr-2"
-      />
-      <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">
-        Search
-      </button>
-    </div>
-  );
-};
-
-export default Search;
+    try
